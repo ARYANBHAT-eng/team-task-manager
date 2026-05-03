@@ -1,8 +1,5 @@
 import { useState } from "react";
 
-import FormField from "./FormField";
-import SelectField from "./SelectField";
-
 const roleOptions = [
   { value: "member", label: "Member" },
   { value: "admin", label: "Admin" },
@@ -42,102 +39,136 @@ function MemberManagement({
   };
 
   return (
-    <section className="space-y-4 rounded-xl bg-white p-6 shadow-md">
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900">Members</h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Add members by backend user ID. The signed-in user ID is shown in the navbar.
-        </p>
-      </div>
-
-      <form onSubmit={handleAddMember} className="grid gap-4 rounded-xl bg-gray-50 p-4 md:grid-cols-[1fr_180px_auto]">
-        <FormField
-          label="User ID"
-          name="userId"
-          type="number"
-          value={newMember.userId}
-          onChange={(event) => {
-            setNewMember((current) => ({ ...current, userId: event.target.value }));
-            if (validationError) {
-              setValidationError("");
-            }
-          }}
-          required
-          disabled={isSubmitting || !isAdmin}
-          error={validationError}
-        />
-        <SelectField
-          label="Role"
-          name="role"
-          value={newMember.role}
-          onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
-          options={roleOptions}
-          disabled={isSubmitting || !isAdmin}
-        />
-        <div className="flex items-end">
-          <button
-            type="submit"
-            disabled={isSubmitting || !isAdmin || !newMember.userId}
-            title={isAdmin ? undefined : "Admin access required"}
-            className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isSubmitting ? "Saving..." : "Add member"}
-          </button>
+    <section className="max-w-5xl mx-auto p-6">
+      <div className="bg-white shadow-md rounded-xl p-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Project Members</h2>
+          <p className="text-sm text-gray-500">
+            Add registered users to this project and manage their project-level role.
+          </p>
         </div>
-      </form>
 
-      <div className="overflow-hidden rounded-xl bg-white shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-100 text-left text-sm font-semibold text-gray-600">
-            <tr>
-              <th className="px-4 py-2">User</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Joined</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white text-sm text-gray-700">
-            {members.map((member) => (
-              <tr key={member.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">
-                  <div className="font-medium text-gray-900">{member.user.full_name}</div>
-                  <div className="text-xs text-gray-500">
-                    {member.user.email} | #{member.user.id}
-                    {member.user.id === currentUserId ? " | You" : ""}
-                  </div>
-                </td>
-                <td className="px-4 py-2 capitalize">{member.role}</td>
-                <td className="px-4 py-2">{new Date(member.joined_at).toLocaleString()}</td>
-                <td className="px-4 py-2">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onUpdateRole(member.user.id, {
-                          role: member.role === "admin" ? "member" : "admin",
-                        })
-                      }
-                      disabled={isSubmitting || !isAdmin}
-                      title={isAdmin ? undefined : "Admin access required"}
-                      className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      Make {member.role === "admin" ? "member" : "admin"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onRemoveMember(member.user.id)}
-                      disabled={isSubmitting || !isAdmin || member.user.id === currentUserId}
-                      title={isAdmin ? undefined : "Admin access required"}
-                      className="rounded-lg bg-red-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </td>
+        <form onSubmit={handleAddMember} className="mb-4">
+          <div className="flex flex-col md:flex-row gap-3 items-end">
+            <div className="w-full">
+              <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
+                User ID
+              </label>
+              <input
+                id="member-user-id"
+                name="userId"
+                type="number"
+                value={newMember.userId}
+                onChange={(event) => {
+                  setNewMember((current) => ({ ...current, userId: event.target.value }));
+                  if (validationError) {
+                    setValidationError("");
+                  }
+                }}
+                placeholder="Enter user ID (e.g. 2)"
+                required
+                disabled={isSubmitting || !isAdmin}
+                className="mt-1 w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-50"
+              />
+              <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
+            </div>
+
+            <div className="w-full md:w-44">
+              <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <select
+                id="member-role"
+                name="role"
+                value={newMember.role}
+                onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
+                disabled={isSubmitting || !isAdmin}
+                className="mt-1 w-full border rounded-lg bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-50"
+              >
+                {roleOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting || !isAdmin || !newMember.userId}
+              title={isAdmin ? undefined : "Admin access required"}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSubmitting ? "Saving..." : "Add member"}
+            </button>
+          </div>
+
+          {validationError ? <p className="text-red-500 text-sm mt-2">{validationError}</p> : null}
+        </form>
+
+        <div className="overflow-x-auto mt-6">
+          <table className="min-w-full bg-white">
+            <thead className="bg-gray-100 text-gray-600 text-sm">
+              <tr>
+                <th className="px-4 py-2 text-left font-semibold">User</th>
+                <th className="px-4 py-2 text-left font-semibold">Role</th>
+                <th className="px-4 py-2 text-left font-semibold">Joined</th>
+                <th className="px-4 py-2 text-left font-semibold">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-700">
+              {members.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="px-4 py-8 text-center text-sm text-gray-500">
+                    No project members yet
+                  </td>
+                </tr>
+              ) : (
+                members.map((member) => (
+                  <tr key={member.id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-2 text-sm">
+                      <div className="font-medium text-gray-900">{member.user.full_name}</div>
+                      <div className="text-xs text-gray-500">
+                        {member.user.email} | #{member.user.id}
+                        {member.user.id === currentUserId ? " | You" : ""}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2 text-sm capitalize">{member.role}</td>
+                    <td className="px-4 py-2 text-sm whitespace-nowrap">
+                      {new Date(member.joined_at).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-2 text-sm">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onUpdateRole(member.user.id, {
+                              role: member.role === "admin" ? "member" : "admin",
+                            })
+                          }
+                          disabled={isSubmitting || !isAdmin}
+                          title={isAdmin ? undefined : "Admin access required"}
+                          className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
+                        >
+                          Make {member.role === "admin" ? "member" : "admin"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onRemoveMember(member.user.id)}
+                          disabled={isSubmitting || !isAdmin || member.user.id === currentUserId}
+                          title={isAdmin ? undefined : "Admin access required"}
+                          className="rounded-lg bg-red-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );
