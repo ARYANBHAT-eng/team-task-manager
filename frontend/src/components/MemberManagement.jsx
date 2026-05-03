@@ -39,7 +39,7 @@ function MemberManagement({
   };
 
   return (
-    <section className="max-w-4xl mx-auto">
+    <section className="max-w-5xl mx-auto">
       <div className="bg-white shadow-lg rounded-xl p-6">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Project Members</h2>
@@ -49,66 +49,68 @@ function MemberManagement({
         </div>
 
         <form onSubmit={handleAddMember}>
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div className="flex-1">
-              <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
-                User ID
-              </label>
-              <input
-                id="member-user-id"
-                name="userId"
-                type="number"
-                value={newMember.userId}
-                onChange={(event) => {
-                  setNewMember((current) => ({ ...current, userId: event.target.value }));
-                  if (validationError) {
-                    setValidationError("");
-                  }
-                }}
-                placeholder="Enter user ID (e.g. 2)"
-                required
-                disabled={isSubmitting || !isAdmin}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2"
-              />
-              <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
-            </div>
+          <div className="bg-gray-50 p-4 rounded-lg border">
+            <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_auto] gap-4 items-end">
+              <div>
+                <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
+                  User ID
+                </label>
+                <input
+                  id="member-user-id"
+                  name="userId"
+                  type="number"
+                  value={newMember.userId}
+                  onChange={(event) => {
+                    setNewMember((current) => ({ ...current, userId: event.target.value }));
+                    if (validationError) {
+                      setValidationError("");
+                    }
+                  }}
+                  placeholder="Enter user ID (e.g. 2)"
+                  required
+                  disabled={isSubmitting || !isAdmin}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
+              </div>
 
-            <div>
-              <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
-                Role
-              </label>
-              <select
-                id="member-role"
-                name="role"
-                value={newMember.role}
-                onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
-                disabled={isSubmitting || !isAdmin}
-                className="w-40 border rounded-lg px-3 py-2"
+              <div>
+                <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
+                  Role
+                </label>
+                <select
+                  id="member-role"
+                  name="role"
+                  value={newMember.role}
+                  onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
+                  disabled={isSubmitting || !isAdmin}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                >
+                  {roleOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting || !isAdmin || !newMember.userId}
+                title={isAdmin ? undefined : "Admin access required"}
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg h-[42px] hover:bg-blue-700 transition whitespace-nowrap"
               >
-                {roleOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                {isSubmitting ? "Saving..." : "Add member"}
+              </button>
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting || !isAdmin || !newMember.userId}
-              title={isAdmin ? undefined : "Admin access required"}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg h-[42px]"
-            >
-              {isSubmitting ? "Saving..." : "Add member"}
-            </button>
+            {validationError ? <p className="text-red-500 text-sm mt-2">{validationError}</p> : null}
           </div>
-
-          {validationError ? <p className="text-red-500 text-sm mt-2">{validationError}</p> : null}
         </form>
 
         <div className="overflow-x-auto mt-6">
-          <table className="min-w-full">
-            <thead className="bg-gray-100 text-gray-600 text-sm">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-100 text-gray-600">
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">User</th>
                 <th className="px-4 py-2 text-left font-semibold">Role</th>
@@ -125,20 +127,20 @@ function MemberManagement({
                 </tr>
               ) : (
                 members.map((member) => (
-                  <tr key={member.id} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-2 text-sm">
+                  <tr key={member.id} className="border-b hover:bg-gray-50 transition">
+                    <td className="px-4 py-3 align-middle">
                       <div className="font-medium text-gray-900">{member.user.full_name}</div>
                       <div className="text-xs text-gray-500">
                         {member.user.email} | #{member.user.id}
                         {member.user.id === currentUserId ? " | You" : ""}
                       </div>
                     </td>
-                    <td className="px-4 py-2 text-sm capitalize">{member.role}</td>
-                    <td className="px-4 py-2 text-sm whitespace-nowrap">
+                    <td className="px-4 py-3 align-middle capitalize">{member.role}</td>
+                    <td className="px-4 py-3 align-middle whitespace-nowrap">
                       {new Date(member.joined_at).toLocaleString()}
                     </td>
-                    <td className="px-4 py-2 text-sm">
-                      <div className="flex flex-wrap gap-2">
+                    <td className="px-4 py-3 align-middle">
+                      <div className="flex gap-2">
                         <button
                           type="button"
                           onClick={() =>
