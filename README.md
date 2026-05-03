@@ -1,180 +1,144 @@
-# 🚀 Team Task Manager (Full-Stack)
+# 🚀 Team Task Manager
 
-A full-stack web application that allows teams to manage projects, assign tasks, and track progress with **role-based access control (RBAC)**.
-
----
-
-## 🔥 Features
-
-### 🔐 Authentication
-
-* User Signup & Login (JWT-based)
-* Secure password hashing (bcrypt)
-
-### 📁 Project Management
-
-* Create and manage projects
-* Project creator becomes **Admin**
-
-### 👥 Team Management
-
-* Add/remove members to projects (Admin only)
-* Project-scoped roles (Admin / Member)
-
-### ✅ Task Management
-
-* Create, assign, update, delete tasks
-* Task status tracking:
-
-  * Todo
-  * In Progress
-  * Done
-* Assignment restricted to project members
-
-### 📊 Dashboard
-
-* Task summary (total, completed, overdue)
-* Overdue task highlighting
-* Assigned tasks visibility
-
-### 🔐 Role-Based Access Control (RBAC)
-
-* Admin:
-
-  * Manage members
-  * Full task control
-* Member:
-
-  * Can only edit tasks assigned to them
-* Enforced at **backend + reflected in frontend**
+A production-ready full-stack web application for managing projects, assigning tasks, and tracking team progress with role-based access control.
 
 ---
 
-## 🧠 Tech Stack
+## 🔗 Live Application
+
+- Frontend (Vercel)  
+  https://team-task-manager-git-deploy-aryanbhat-engs-projects.vercel.app  
+
+- Backend API (Railway)  
+  https://team-task-manager-production-f579.up.railway.app  
+
+- API Docs (Swagger)  
+  https://team-task-manager-production-f579.up.railway.app/docs  
+
+---
+
+## ✨ Core Features
+
+- JWT-based Authentication (Signup/Login)
+- Role-Based Access Control (Admin / Member)
+- Project Creation & Team Management
+- Task Assignment & Status Tracking
+- Dashboard with task insights & overdue tracking
+- Secure password hashing (bcrypt)
+
+---
+
+## 🧠 Role Permissions
+
+| Feature | Admin | Member |
+|--------|------|--------|
+| Create Project | ✅ | ❌ |
+| Add/Remove Members | ✅ | ❌ |
+| Assign Tasks | ✅ | ❌ |
+| Update Task Status | ✅ | ✅ |
+| Delete Project | ✅ | ❌ |
+
+---
+
+## 🛠 Tech Stack
 
 ### Frontend
+- React (Vite)
+- Tailwind CSS
+- Axios
 
-* React (Vite)
-* Tailwind CSS
-* Axios
+### Backend
+- FastAPI
+- SQLAlchemy ORM
+- PostgreSQL
+- JWT Authentication
+
+### Deployment
+- Frontend → Vercel  
+- Backend → Railway  
+- Database → Railway PostgreSQL  
+
+---
+
+## ⚙️ Environment Configuration
+
+### Backend (.env)
+
+DATABASE_URL=your_postgres_url
+JWT_SECRET_KEY=your_secret_key
+CORS_ORIGINS=["https://your-vercel-url.vercel.app
+"]
+
+
+### Frontend (.env)
+
+VITE_API_BASE_URL=https://your-railway-url/api
+
+
+---
+
+## 🧪 Local Development
 
 ### Backend
 
-* FastAPI
-* SQLAlchemy
-* JWT Authentication
-
-### Database
-
-* PostgreSQL
-
-### Deployment
-
-* Backend: Railway
-* Frontend: Vercel / Railway
-
----
-
-## 🏗️ Architecture
-
-### Core Entities
-
-* User
-* Project
-* ProjectMembership (RBAC layer)
-* Task
-
-> Roles are **project-scoped**, not global.
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone Repository
-
-```bash
-git clone https://github.com/ARYANBHAT-eng/team-task-manager
-cd team-task-manager
-```
-
----
-
-### 2. Backend Setup
-
-```bash
 cd backend
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1   # Windows
+..venv\Scripts\activate
 pip install -r requirements.txt
-```
+uvicorn app.main:app --reload
 
-#### Create `.env`
 
-```
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/taskdb
-JWT_SECRET_KEY=your_secret
-API_V1_PREFIX=/api
-CORS_ORIGINS=["http://localhost:5173"]
-```
+### Frontend
 
-#### Run Backend
-
-```bash
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
-```
-
----
-
-### 3. Frontend Setup
-
-```bash
 cd frontend
 npm install
-```
-
-#### Create `.env`
-
-```
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
-```
-
-#### Run Frontend
-
-```bash
 npm run dev
-```
+
 
 ---
 
-## 🧪 Demo Flow
+## 📡 API Overview
 
-1. Signup & Login
-2. Create a Project (becomes Admin)
-3. Add a Member
-4. Create & Assign Tasks
-5. Login as Member
-6. Demonstrate restricted actions
-7. View Dashboard insights
-
----
-
-## ⚠️ Notes
-
-* Password length is limited to 72 characters due to bcrypt
-* Roles are **project-specific**, not global
-* Backend enforces all permissions (frontend only reflects)
+| Method | Endpoint | Description |
+|------|--------|------------|
+| POST | /api/auth/signup | Register user |
+| POST | /api/auth/login | Login |
+| GET | /api/projects | Get projects |
+| POST | /api/tasks | Create task |
+| GET | /api/dashboard | Dashboard stats |
 
 ---
 
-## 🚀 Future Improvements
+## 🚧 Key Engineering Decisions
 
-* Add email-based member invite
-* Implement database migrations (Alembic)
-* Add automated tests
+- FastAPI lifespan used for automatic DB table creation
+- Centralized Axios client with JWT injection
+- RBAC enforced at backend level
+- Environment-based configuration for deployment
+- Resolved bcrypt-passlib compatibility issue
 
 ---
 
-## 👨‍💻 Author
+## ⚠️ Edge Cases Handled
 
-Aryan Bhat
-GitHub: https://github.com/ARYANBHAT-eng
+- Duplicate user signup prevention
+- Token validation & expiry handling
+- Protected routes (frontend + backend)
+- Strict CORS handling
+- SPA routing fix via vercel.json
+
+---
+
+## 📌 Project Status
+
+- Fully functional
+- Deployed (Frontend + Backend + DB)
+- Production-ready
+- Secure authentication implemented
+
+---
+
+## 👤 Author
+
+Aryan Bhat  
+https://github.com/ARYANBHAT-eng
