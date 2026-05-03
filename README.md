@@ -7,7 +7,7 @@ A production-ready full-stack web application for managing projects, assigning t
 ## 🔗 Live Application
 
 - Frontend (Vercel)  
-  https://team-task-manager-git-deploy-aryanbhat-engs-projects.vercel.app  
+  https://team-task-manager-ten-drab.vercel.app  
 
 - Backend API (Railway)  
   https://team-task-manager-production-f579.up.railway.app  
