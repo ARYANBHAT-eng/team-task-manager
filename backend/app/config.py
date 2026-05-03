@@ -1,5 +1,8 @@
-from pydantic import field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import json
+from typing import Annotated
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -9,7 +12,7 @@ class Settings(BaseSettings):
     jwt_secret_key: str
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 1440
-    cors_origins: list[str] = ["*"]
+    cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -22,8 +25,14 @@ class Settings(BaseSettings):
     @classmethod
     def parse_cors_origins(cls, value: str | list[str]) -> list[str]:
         if isinstance(value, str):
-            origins = [origin.strip() for origin in value.split(",")]
-            return [origin for origin in origins if origin]
+            try:
+                parsed = json.loads(value)
+                if isinstance(parsed, list):
+                    return [origin.strip() for origin in parsed if isinstance(origin, str) and origin.strip()]
+            except json.JSONDecodeError:
+                pass
+
+            return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 
 
