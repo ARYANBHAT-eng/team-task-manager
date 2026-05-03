@@ -39,8 +39,8 @@ function MemberManagement({
   };
 
   return (
-    <section className="max-w-5xl mx-auto p-6">
-      <div className="bg-white shadow-md rounded-xl p-6">
+    <section className="w-full p-6">
+      <div className="bg-white shadow-lg rounded-xl p-6">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Project Members</h2>
           <p className="text-sm text-gray-500">
@@ -48,8 +48,8 @@ function MemberManagement({
           </p>
         </div>
 
-        <form onSubmit={handleAddMember} className="mb-4">
-          <div className="flex flex-col md:flex-row gap-3 items-end">
+        <form onSubmit={handleAddMember}>
+          <div className="flex flex-col md:flex-row gap-4 items-end">
             <div className="w-full">
               <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
                 User ID
@@ -68,12 +68,12 @@ function MemberManagement({
                 placeholder="Enter user ID (e.g. 2)"
                 required
                 disabled={isSubmitting || !isAdmin}
-                className="mt-1 w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-50"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               />
               <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
             </div>
 
-            <div className="w-full md:w-44">
+            <div className="w-full">
               <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
                 Role
               </label>
@@ -83,7 +83,7 @@ function MemberManagement({
                 value={newMember.role}
                 onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
                 disabled={isSubmitting || !isAdmin}
-                className="mt-1 w-full border rounded-lg bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-50"
+                className="w-full border border-gray-300 rounded-lg bg-white px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500"
               >
                 {roleOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -97,7 +97,7 @@ function MemberManagement({
               type="submit"
               disabled={isSubmitting || !isAdmin || !newMember.userId}
               title={isAdmin ? undefined : "Admin access required"}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
             >
               {isSubmitting ? "Saving..." : "Add member"}
             </button>
