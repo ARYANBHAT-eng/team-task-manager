@@ -213,7 +213,7 @@ function TasksPage() {
       </div>
 
       <section className="grid gap-6 xl:grid-cols-[380px_1fr]">
-        <div className="space-y-6">
+        <div>
           <div className="rounded-xl bg-white p-6 shadow-md">
             <h2 className="text-xl font-semibold text-gray-900">{editingTask ? "Edit task" : "Create task"}</h2>
             <p className="mt-1 text-sm text-gray-500">
@@ -233,17 +233,6 @@ function TasksPage() {
             </div>
             {taskError ? <div className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-500">{taskError}</div> : null}
           </div>
-
-          <MemberManagement
-            members={members}
-            currentUserId={user.id}
-            isAdmin={projectAdmin}
-            isSubmitting={isMemberSubmitting}
-            onAddMember={handleAddMember}
-            onUpdateRole={handleUpdateRole}
-            onRemoveMember={handleRemoveMember}
-          />
-          {memberError ? <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-500 shadow-md">{memberError}</div> : null}
         </div>
 
         <div className="space-y-4">
@@ -291,6 +280,19 @@ function TasksPage() {
           />
         </div>
       </section>
+
+      <MemberManagement
+        members={members}
+        currentUserId={user.id}
+        isAdmin={projectAdmin}
+        isSubmitting={isMemberSubmitting}
+        onAddMember={handleAddMember}
+        onUpdateRole={handleUpdateRole}
+        onRemoveMember={handleRemoveMember}
+      />
+      {memberError ? (
+        <div className="max-w-4xl mx-auto rounded-lg bg-red-50 px-3 py-2 text-sm text-red-500 shadow-md">{memberError}</div>
+      ) : null}
     </div>
   );
 }

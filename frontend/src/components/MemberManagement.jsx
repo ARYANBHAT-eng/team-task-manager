@@ -39,7 +39,7 @@ function MemberManagement({
   };
 
   return (
-    <section className="w-full p-6">
+    <section className="max-w-4xl mx-auto">
       <div className="bg-white shadow-lg rounded-xl p-6">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Project Members</h2>
@@ -50,7 +50,7 @@ function MemberManagement({
 
         <form onSubmit={handleAddMember}>
           <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div className="w-full">
+            <div className="flex-1">
               <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
                 User ID
               </label>
@@ -68,12 +68,12 @@ function MemberManagement({
                 placeholder="Enter user ID (e.g. 2)"
                 required
                 disabled={isSubmitting || !isAdmin}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2"
               />
               <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
             </div>
 
-            <div className="w-full">
+            <div>
               <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
                 Role
               </label>
@@ -83,7 +83,7 @@ function MemberManagement({
                 value={newMember.role}
                 onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
                 disabled={isSubmitting || !isAdmin}
-                className="w-full border border-gray-300 rounded-lg bg-white px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                className="w-40 border rounded-lg px-3 py-2"
               >
                 {roleOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -97,7 +97,7 @@ function MemberManagement({
               type="submit"
               disabled={isSubmitting || !isAdmin || !newMember.userId}
               title={isAdmin ? undefined : "Admin access required"}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg h-[42px]"
             >
               {isSubmitting ? "Saving..." : "Add member"}
             </button>
@@ -107,7 +107,7 @@ function MemberManagement({
         </form>
 
         <div className="overflow-x-auto mt-6">
-          <table className="min-w-full bg-white">
+          <table className="min-w-full">
             <thead className="bg-gray-100 text-gray-600 text-sm">
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">User</th>
