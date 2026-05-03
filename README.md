@@ -10,10 +10,10 @@ A production-ready full-stack web application for managing projects, assigning t
   https://team-task-manager-ten-drab.vercel.app  
 
 - Backend API (Railway)  
-  https://team-task-manager-production-f579.up.railway.app  
+  https://team-task-manager-production-84c1.up.railway.app  
 
 - API Docs (Swagger)  
-  https://team-task-manager-production-f579.up.railway.app/docs  
+  https://team-task-manager-production-84c1.up.railway.app/docs  
 
 ---
 
