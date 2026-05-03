@@ -49,61 +49,61 @@ function MemberManagement({
         </div>
 
         <form onSubmit={handleAddMember}>
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_auto] gap-4 items-end">
-              <div>
-                <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
-                  User ID
-                </label>
-                <input
-                  id="member-user-id"
-                  name="userId"
-                  type="number"
-                  value={newMember.userId}
-                  onChange={(event) => {
-                    setNewMember((current) => ({ ...current, userId: event.target.value }));
-                    if (validationError) {
-                      setValidationError("");
-                    }
-                  }}
-                  placeholder="Enter user ID (e.g. 2)"
-                  required
-                  disabled={isSubmitting || !isAdmin}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">Enter the ID of a registered user (shown in navbar)</p>
-              </div>
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_auto] gap-4 mb-2">
+              <label htmlFor="member-user-id" className="text-sm font-medium text-gray-700">
+                User ID
+              </label>
+              <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <div></div>
+            </div>
 
-              <div>
-                <label htmlFor="member-role" className="text-sm font-medium text-gray-700">
-                  Role
-                </label>
-                <select
-                  id="member-role"
-                  name="role"
-                  value={newMember.role}
-                  onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
-                  disabled={isSubmitting || !isAdmin}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                >
-                  {roleOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_auto] gap-4 items-center">
+              <input
+                id="member-user-id"
+                name="userId"
+                type="number"
+                value={newMember.userId}
+                onChange={(event) => {
+                  setNewMember((current) => ({ ...current, userId: event.target.value }));
+                  if (validationError) {
+                    setValidationError("");
+                  }
+                }}
+                placeholder="Enter user ID (e.g. 2)"
+                required
+                disabled={isSubmitting || !isAdmin}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 h-[42px]"
+              />
+
+              <select
+                id="member-role"
+                name="role"
+                value={newMember.role}
+                onChange={(event) => setNewMember((current) => ({ ...current, role: event.target.value }))}
+                disabled={isSubmitting || !isAdmin}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 h-[42px]"
+              >
+                {roleOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
 
               <button
                 type="submit"
                 disabled={isSubmitting || !isAdmin || !newMember.userId}
                 title={isAdmin ? undefined : "Admin access required"}
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg h-[42px] hover:bg-blue-700 transition whitespace-nowrap"
+                className="bg-blue-600 text-white px-5 h-[42px] rounded-lg hover:bg-blue-700 transition whitespace-nowrap"
               >
                 {isSubmitting ? "Saving..." : "Add member"}
               </button>
             </div>
 
+            <p className="text-xs text-gray-500 mt-2">Enter the ID of a registered user (shown in navbar)</p>
             {validationError ? <p className="text-red-500 text-sm mt-2">{validationError}</p> : null}
           </div>
         </form>
